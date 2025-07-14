@@ -2269,7 +2269,7 @@ input, select, textarea {
 			text-rendering: auto;
 			line-height: 1;
 			text-transform: none !important;
-			font-family: 'Font Awesome 5 Free';
+			font-family: 'Font Awesome 6 Free';
 			font-weight: 400;
 		}
 
@@ -2281,12 +2281,13 @@ input, select, textarea {
 			line-height: inherit;
 		}
 
-		.icon.solid:before {
+		.icon.fa-solid:before {
 			font-weight: 900;
+			font-family: 'Font Awesome 6 Free';
 		}
 
-		.icon.brands:before {
-			font-family: 'Font Awesome 5 Brands';
+		.icon.fa-brands:before {
+			font-family: 'Font Awesome 6 Brands';
 		}
 
 /* List */
