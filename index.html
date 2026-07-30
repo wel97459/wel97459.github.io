@@ -1,83 +1,373 @@
 <!DOCTYPE HTML>
-<html>
-
+<html id="top">
 <head>
-	<title>NV Mesh</title>
+	<title>NV Mesh — Nevada Community Mesh Network</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-</head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="Nevada Mesh — a community-driven, off-grid MeshCore radio network keeping Carson City, Reno, Minden, Gardnerville, Dayton, Silver Springs and Fallon connected. Live network stats, coverage and how to join." />
+	<meta name="theme-color" content="#4eb980" />
 
+	<!-- Social / link-preview cards -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Nevada Mesh — Community Mesh Network" />
+	<meta property="og:description" content="Keeping Nevadans connected with community-driven, off-grid MeshCore radio. Live network stats, coverage and how to join." />
+	<meta property="og:url" content="https://nvme.sh" />
+	<meta property="og:image" content="images/header.jpg" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Nevada Mesh — Community Mesh Network" />
+	<meta name="twitter:description" content="Keeping Nevadans connected with community-driven, off-grid MeshCore radio." />
+	<meta name="twitter:image" content="images/header.jpg" />
+
+	<!-- Favicon -->
+	<link rel="icon" href="images/nvmesh_logo_box.svg" type="image/svg+xml" />
+	<link rel="apple-touch-icon" href="images/nvmesh_logo_color.png" />
+
+	<link rel="stylesheet" href="assets/css/main.css" />
+
+	<style>
+		:root { --nm-accent: #4eb980; --nm-accent-d: #3da36b; }
+
+		html { scroll-behavior: smooth; }
+
+		/* ---------- Sticky nav ---------- */
+		#nav {
+			position: sticky;
+			top: 0;
+			z-index: 1000;
+			background: rgba(255, 255, 255, 0.92);
+			backdrop-filter: saturate(180%) blur(10px);
+			border-bottom: 1px solid #ececec;
+			transition: box-shadow .2s ease;
+		}
+		#nav.scrolled { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08); }
+		.nav-inner {
+			max-width: 1200px;
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: .55em 1.2em;
+			gap: 1em;
+		}
+		.nav-brand {
+			display: flex;
+			align-items: center;
+			gap: .5em;
+			font-weight: 700;
+			color: #2c2c2c;
+			text-decoration: none;
+			white-space: nowrap;
+		}
+		.nav-brand img { width: 30px; height: 30px; }
+		.nav-links {
+			display: flex;
+			align-items: center;
+			gap: 1.4em;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+		.nav-links::-webkit-scrollbar { display: none; }
+		.nav-links a {
+			color: #555;
+			text-decoration: none;
+			font-size: .95em;
+			font-weight: 600;
+			padding: .3em 0;
+			border-bottom: 2px solid transparent;
+			transition: color .15s ease, border-color .15s ease;
+			white-space: nowrap;
+		}
+		.nav-links a:hover { color: var(--nm-accent); }
+		.nav-links a.active { color: var(--nm-accent); border-bottom-color: var(--nm-accent); }
+		.nav-cta {
+			background: var(--nm-accent);
+			color: #fff !important;
+			padding: .4em .9em !important;
+			border-radius: 999px;
+			border-bottom: none !important;
+		}
+		.nav-cta:hover { background: var(--nm-accent-d); }
+
+		/* offset for sticky nav when jumping to anchors */
+		#main section[id] { scroll-margin-top: 72px; }
+
+		/* ---------- Hero CTAs ---------- */
+		.hero-cta {
+			margin-top: 1.8em;
+			display: flex;
+			gap: .8em;
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+		.hero-cta a {
+			display: inline-block;
+			padding: .7em 1.6em;
+			border-radius: 999px;
+			font-weight: 700;
+			text-decoration: none;
+			font-size: 1em;
+			transition: background .15s ease, color .15s ease, border-color .15s ease;
+		}
+		.btn-primary { background: var(--nm-accent); color: #fff; }
+		.btn-primary:hover { background: var(--nm-accent-d); }
+		.btn-ghost { background: rgba(255, 255, 255, 0.14); color: #fff; border: 1px solid rgba(255, 255, 255, 0.85); }
+		.btn-ghost:hover { background: rgba(255, 255, 255, 0.28); border-color: #fff; }
+
+		/* ---------- Live status badge ---------- */
+		.status-badge {
+			display: inline-block;
+			font-size: .5em;
+			font-weight: 700;
+			letter-spacing: .06em;
+			padding: .35em .8em;
+			border-radius: 999px;
+			vertical-align: middle;
+			margin-left: .6em;
+			text-transform: uppercase;
+		}
+		.status-badge .dot { display: inline-block; width: .55em; height: .55em; border-radius: 50%; background: currentColor; margin-right: .4em; vertical-align: middle; }
+		.status-badge.live   { background: rgba(78,185,128,.15); color: var(--nm-accent); }
+		.status-badge.cached { background: rgba(240,170,40,.16);  color: #c98a12; }
+		.status-badge.demo   { background: rgba(140,140,140,.16); color: #888; }
+		.status-badge.live .dot { animation: nm-pulse 1.6s infinite; }
+		@keyframes nm-pulse { 0% { box-shadow: 0 0 0 0 rgba(78,185,128,.55); } 70% { box-shadow: 0 0 0 .55em rgba(78,185,128,0); } 100% { box-shadow: 0 0 0 0 rgba(78,185,128,0); } }
+
+		/* ---------- Stats grid ---------- */
+		.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 12px; margin: 18px 0; }
+		.stat { background: #f8f9fa; border: 1px solid #ececec; border-radius: 8px; padding: 14px 10px; text-align: center; }
+		.stat-num { font-size: 1.9em; font-weight: 700; color: #2c2c2c; line-height: 1.1; font-variant-numeric: tabular-nums; }
+		.stat-lbl { font-size: .76em; color: #777; margin-top: 5px; text-transform: uppercase; letter-spacing: .03em; }
+		.content h4 { margin: 20px 0 7px; font-size: 1em; color: var(--nm-accent); }
+		ol.operators { margin: 0; padding-left: 1.4em; color: #5b5b5b; }
+		ol.operators li { margin: 3px 0; }
+		ol.operators .cnt { color: #9a9a9a; font-variant-numeric: tabular-nums; }
+		.updated { margin-top: 14px; font-size: .8em; color: #999; }
+
+		/* ---------- Coverage chips ---------- */
+		.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+		.chip { background: rgba(78,185,128,.12); color: var(--nm-accent-d); border: 1px solid rgba(78,185,128,.25); border-radius: 999px; padding: .3em .8em; font-size: .85em; }
+
+		/* ---------- Get Involved CTA band ---------- */
+		#get-involved { text-align: center; padding: 3.5em 1em; }
+		#get-involved h2 { font-size: 2em; margin: 0 0 .4em; color: #2c2c2c; }
+		#get-involved p { color: #666; max-width: 38em; margin: 0 auto 1.4em; }
+		.involve-actions { display: flex; gap: .8em; justify-content: center; flex-wrap: wrap; }
+		.involve-actions a { display: inline-block; padding: .7em 1.6em; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 1em; }
+		.involve-actions .btn-primary { background: var(--nm-accent); color: #fff; }
+		.involve-actions .btn-primary:hover { background: var(--nm-accent-d); }
+		.involve-actions .btn-ghost { background: #fff; color: var(--nm-accent); border: 1px solid var(--nm-accent); }
+		.involve-actions .btn-ghost:hover { background: #f1fbf6; }
+
+		/* ---------- Footer back-to-top ---------- */
+		.to-top { display: inline-block; margin-top: 1.2em; color: rgba(255,255,255,.7); font-size: .85em; text-decoration: none; }
+		.to-top:hover { color: #fff; }
+
+		/* ---------- Fix: let feature blocks grow (template clips at 20em) ---------- */
+		#main .feature { height: auto !important; }
+		#main .feature .image { height: auto; min-height: 16em; }
+		#main .feature .image img { position: static; width: 100%; height: 16em; object-fit: cover; }
+		#main .feature .content { width: 50%; }
+
+		/* ---------- Network Map (embedded renomap) — full-bleed band like Events ---------- */
+		.map-section { margin: 4em 0 2em; }
+		.map-section.major {
+			width: 100%;
+			margin: 4em 0 2em;
+			background: #f4faf6;
+			padding: 3em 1.2em;
+			border-top: 1px solid #e3f0e8;
+			border-bottom: 1px solid #e3f0e8;
+			box-sizing: border-box;
+		}
+		.map-head { text-align: center; max-width: 51em; margin: 0 auto; }
+		.map-head h3 { font-size: 1.8em; margin: 0 0 .25em; color: #2c2c2c; }
+		.map-head p { color: #666; margin: 0 0 1.2em; }
+		.map-wrap {
+			position: relative;
+			width: 100%;
+			max-width: 1100px;
+			margin: 0 auto;
+			height: 540px;
+			border: 1px solid #ececec;
+			border-radius: 10px;
+			overflow: hidden;
+			background: #eef3f0;
+		}
+		.map-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+		.map-note { text-align: center; font-size: .8em; color: #999; margin-top: .8em; max-width: 51em; margin-left: auto; margin-right: auto; }
+		.map-note a { color: var(--nm-accent); }
+
+		@media screen and (max-width: 736px) {
+			#main .feature .image img { height: 13em; }
+			#main .feature .content { width: 100% !important; }
+			.map-wrap { height: 380px; }
+		}
+
+		/* Mobile: tighten nav */
+		@media screen and (max-width: 640px) {
+			.nav-inner { padding: .5em .8em; }
+			.nav-links { gap: .9em; }
+			.nav-links a { font-size: .85em; }
+			#header h1 { font-size: 1.9em; }
+		}
+	</style>
+</head>
 <body class="is-preload">
 
-	<!-- Header -->
+	<!-- ===== Sticky Nav ===== -->
+	<nav id="nav">
+		<div class="nav-inner">
+			<a class="nav-brand" href="#top"><img src="images/nvmesh_logo_box.svg" alt="NV Mesh" /> NV Mesh</a>
+			<ul class="nav-links">
+				<li><a href="#network">Network</a></li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#coverage">Coverage</a></li>
+				<li><a href="#map">Map</a></li>
+				<li><a href="#specs">Specs</a></li>
+				<li><a href="#join">Join</a></li>
+				<li><a href="#donate" class="nav-cta">Donate</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- ===== Header / Hero ===== -->
 	<div id="header">
 		<span class="logo icon"><img style="width: 100%;" src="images/nvmesh_logo_box.svg" alt="NV Mesh Logo" /></span>
 		<h1>Welcome to Nevada Mesh</h1>
 		<p>Keeping people connected with community driven tools</p>
+		<div class="hero-cta">
+			<a class="btn-primary" href="#join">Join the Network</a>
+			<a class="btn-ghost" href="#network">View Live Stats</a>
+		</div>
 	</div>
 
-	<!-- Main -->
+	<!-- ===== Main ===== -->
 	<div id="main">
 
 		<div class="box alt container">
-			<section class="feature left">
-				<a href="#" class="image icon fa-solid fa-circle-nodes"><img src="images/pic01.jpg" alt="" /></a>
+
+			<!-- Live MeshCore Network (promoted up) -->
+			<section class="feature left" id="network">
+				<a href="#" class="image icon fa-solid fa-chart-line"><img loading="lazy" src="images/pic01.jpg" alt="" /></a>
+				<div class="content">
+					<h3>Live MeshCore Network <span class="status-badge demo" id="stats-badge"><span class="dot"></span>Loading</span></h3>
+					<p>Real-time snapshot of the Nevada Mesh MeshCore network.</p>
+
+					<div class="stat-grid">
+						<div class="stat"><div class="stat-num" id="nodes-total">&ndash;</div><div class="stat-lbl">Total Nodes</div></div>
+						<div class="stat"><div class="stat-num" id="nodes-24h">&ndash;</div><div class="stat-lbl">Active 24h</div></div>
+						<div class="stat"><div class="stat-num" id="nodes-7d">&ndash;</div><div class="stat-lbl">Active 7d</div></div>
+						<div class="stat"><div class="stat-num" id="packets-24h">&ndash;</div><div class="stat-lbl">Packets 24h</div></div>
+						<div class="stat"><div class="stat-num" id="observations">&ndash;</div><div class="stat-lbl">Observations</div></div>
+						<div class="stat"><div class="stat-num" id="cities">&ndash;</div><div class="stat-lbl">Cities</div></div>
+						<div class="stat"><div class="stat-num" id="repeaters">&ndash;</div><div class="stat-lbl">Repeaters</div></div>
+						<div class="stat"><div class="stat-num" id="rooms">&ndash;</div><div class="stat-lbl">Rooms</div></div>
+						<div class="stat"><div class="stat-num" id="companions">&ndash;</div><div class="stat-lbl">Companions</div></div>
+						<div class="stat"><div class="stat-num" id="observers">&ndash;</div><div class="stat-lbl">Observers</div></div>
+					</div>
+
+					<p class="updated">Live from CoreScope &middot; last updated: <span id="stats-updated">loading&hellip;</span></p>
+				</div>
+			</section>
+
+			<!-- About -->
+			<section class="feature right" id="about">
+				<a href="#" class="image icon fa-solid fa-circle-nodes"><img loading="lazy" src="images/pic02.jpg" alt="" /></a>
 				<div class="content">
 					<h3>About Nevada Mesh</h3>
 					<p>Based around Carson City, NV. We have a fully connected mesh network between Gardnerville,
 						Minden, Carson City, Reno, Dayton, Silver Springs and Fallon.</p>
 					<p>Join us at the platforms below.</p>
 					<ul class="icons">
-						<li><a href="https://discord.gg/FUYAZgp4Ew" class="icon fa-brands fa-discord"><span
-									class="label">Discord</span></a></li>
-						<li><a href="https://t.me/+Uhkh8-nD74JiODlh" class="icon fa-brands fa-telegram"><span
-									class="label">Telegram</span></a></li>
-						<li><a href="https://www.facebook.com/groups/2189330928181707/?ref=share&mibextid=NSMWBT"
-								class="icon fa-brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-						<li><a href="https://github.com/wel97459" class="icon fa-brands fa-github"><span
-									class="label">Github</span></a></li>
-						<li><a href="mailto:support@nvme.sh" class="icon fa fa-envelope-open"><span
-									class="label">Email</span></a></li>
-						<li><a href="https://www.paypal.com/ncp/payment/T73EGZRKDS6A2"
-								class="icon fa-brands fa-paypal"><span class="label">PayPal Donations</span></a></li>
+						<li><a href="https://discord.gg/FUYAZgp4Ew" class="icon fa-brands fa-discord"><span class="label">Discord</span></a></li>
+						<li><a href="https://t.me/+Uhkh8-nD74JiODlh" class="icon fa-brands fa-telegram"><span class="label">Telegram</span></a></li>
+						<li><a href="https://www.facebook.com/groups/2189330928181707/?ref=share&mibextid=NSMWBT" class="icon fa-brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+						<li><a href="https://github.com/wel97459" class="icon fa-brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="mailto:support@nvme.sh" class="icon fa fa-envelope-open"><span class="label">Email</span></a></li>
+						<li><a href="https://www.paypal.com/ncp/payment/T73EGZRKDS6A2" class="icon fa-brands fa-paypal"><span class="label">PayPal Donations</span></a></li>
 					</ul>
 				</div>
-
-
 			</section>
-			<section class="feature right">
-				<a href="#" class="image icon fa-solid fa-tower-broadcast"><img src="images/pic02.jpg" alt="" /></a>
+
+			<!-- Coverage -->
+			<section class="feature left" id="coverage">
+				<a href="#" class="image icon fa-solid fa-tower-broadcast"><img loading="lazy" src="images/pic03.jpg" alt="" /></a>
 				<div class="content">
 					<h3>Coverage</h3>
 					<p>Our current coverage area includes Gardnerville, Minden, Carson City, Reno, Dayton, Silver
 						Springs and Fallon.</p>
 					<p>The current goals of the mesh network are to expand coverage and improve connectivity between
 						these areas.</p>
+					<div class="chips">
+						<span class="chip">Gardnerville</span>
+						<span class="chip">Minden</span>
+						<span class="chip">Carson City</span>
+						<span class="chip">Reno</span>
+						<span class="chip">Dayton</span>
+						<span class="chip">Silver Springs</span>
+						<span class="chip">Fallon</span>
+					</div>
 				</div>
 			</section>
-			<section class="feature left">
-				<a href="#" class="image icon fa-solid fa-comment"><img src="images/pic03.jpg" alt="" /></a>
+
+			<!-- Specs -->
+			<section class="feature right" id="specs">
+				<a href="#" class="image icon fa-solid fa-comment"><img loading="lazy" src="images/pic04.jpg" alt="" /></a>
 				<div class="content">
-					<h3>Network Comments</h3>
-					Our network is MeshCore based, using the US Recommended preset:
-					<li>910.525Mhz</li>
-					<li>62.5Khz Bandwidth</li>
-					<li>7 Spreading Factor</li>
-					<li>4/5 Coding</li>
+					<h3>Network Specs</h3>
+					<p>Our network is MeshCore based, using the US Recommended preset:</p>
+					<ul>
+						<li>910.525 MHz</li>
+						<li>62.5 kHz Bandwidth</li>
+						<li>7 Spreading Factor</li>
+						<li>4/5 Coding Rate</li>
+					</ul>
 				</div>
 			</section>
-			<section class="feature right">
-				<a href="#" class="image icon fa-solid fa-hand-holding-dollar"><img src="images/pic04.jpg" alt="" /></a>
+
+			<!-- Donate -->
+			<section class="feature left" id="donate">
+				<a href="#" class="image icon fa-solid fa-hand-holding-dollar"><img loading="lazy" src="images/pic01.jpg" alt="" /></a>
 				<div class="content">
 					<h3>Donations</h3>
 					<p>We are a community driven group, All donations go directly to equipment, maintenance, and to help
-						fund
-						member projects as seen fit.</p>
+						fund member projects as seen fit.</p>
 					<a href="https://www.paypal.com/ncp/payment/T73EGZRKDS6A2">Donate via PayPal</a>
 				</div>
 			</section>
+
+
 		</div>
+
+		<!-- Network Map (CoreScope live3 instance, clean embed: ?embed=1 strips nav chrome) -->
+		<section id="map" class="map-section major">
+			<div class="container medium map-head">
+				<h3>Network Map</h3>
+				<p>Live coverage across Nevada &mdash; nodes, repeaters and links, updated in real time.</p>
+			</div>
+			<div class="map-wrap">
+				<iframe src="https://map.nvme.sh/live3/live#/map?embed=1" title="Nevada Mesh live network map"
+					loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+					allow="geolocation"></iframe>
+			</div>
+			<p class="map-note">Live map by <a href="https://map.nvme.sh/live3/live" target="_blank" rel="noopener">Nevada Mesh &middot; map.nvme.sh</a> &middot; <a href="https://map.nvme.sh/live3/live" target="_blank" rel="noopener">open full view with controls</a></p>
+		</section>
+
+		<!-- Get Involved CTA -->
+		<section id="join">
+			<div id="get-involved">
+				<h2>Get Involved</h2>
+				<p>Whether you want to hop on the mesh, lend a hand with infrastructure, or just say hi — there's a
+					place for you in Nevada Mesh.</p>
+				<div class="involve-actions">
+					<a class="btn-primary" href="https://t.me/+Uhkh8-nD74JiODlh">Join on Telegram</a>
+					<a class="btn-ghost" href="https://discord.gg/FUYAZgp4Ew">Join on Discord</a>
+				</div>
+			</div>
+		</section>
 
 		<footer class="major container medium">
 			<h3>Events</h3>
@@ -86,29 +376,25 @@
 
 	</div>
 
-	<!-- Footer -->
+	<!-- ===== Footer ===== -->
 	<div id="footer">
 		<div class="container medium">
 
 			<ul class="icons">
-				<li><a href="https://discord.gg/FUYAZgp4Ew" class="icon fa-brands fa-discord"><span
-							class="label">Discord</span></a></li>
-				<li><a href="https://t.me/+Uhkh8-nD74JiODlh" class="icon fa-brands fa-telegram"><span
-							class="label">Telegram</span></a></li>
-				<li><a href="https://www.facebook.com/groups/2189330928181707/?ref=share&mibextid=NSMWBT"
-						class="icon fa-brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-				<li><a href="https://github.com/wel97459" class="icon fa-brands fa-github"><span
-							class="label">Github</span></a></li>
-				<li><a href="mailto:support@nvme.sh" class="icon fa fa-envelope-open"><span
-							class="label">Email</span></a></li>
-				<li><a href="https://www.paypal.com/ncp/payment/T73EGZRKDS6A2" class="icon fa-brands fa-paypal"><span
-							class="label">PayPal Donations</span></a></li>
+				<li><a href="https://discord.gg/FUYAZgp4Ew" class="icon fa-brands fa-discord"><span class="label">Discord</span></a></li>
+				<li><a href="https://t.me/+Uhkh8-nD74JiODlh" class="icon fa-brands fa-telegram"><span class="label">Telegram</span></a></li>
+				<li><a href="https://www.facebook.com/groups/2189330928181707/?ref=share&mibextid=NSMWBT" class="icon fa-brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+				<li><a href="https://github.com/wel97459" class="icon fa-brands fa-github"><span class="label">Github</span></a></li>
+				<li><a href="mailto:support@nvme.sh" class="icon fa fa-envelope-open"><span class="label">Email</span></a></li>
+				<li><a href="https://www.paypal.com/ncp/payment/T73EGZRKDS6A2" class="icon fa-brands fa-paypal"><span class="label">PayPal Donations</span></a></li>
 			</ul>
 
 			<ul class="copyright">
 				<li>&copy; Nevada Mesh. All rights reserved.</li>
 				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 			</ul>
+
+			<a class="to-top" href="#top">&uarr; Back to top</a>
 
 		</div>
 	</div>
@@ -120,6 +406,164 @@
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
 
-</body>
+	<!-- Nav: shadow on scroll + scroll-spy active link -->
+	<script>
+		(function () {
+			var nav = document.getElementById('nav');
+			var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
 
+			window.addEventListener('scroll', function () {
+				nav.classList.toggle('scrolled', window.scrollY > 8);
+			}, { passive: true });
+
+			if ('IntersectionObserver' in window) {
+				var map = {};
+				links.forEach(function (a) {
+					var id = a.getAttribute('href');
+					if (id && id.charAt(0) === '#' && id.length > 1) {
+						var sec = document.querySelector(id);
+						if (sec) map[id] = a;
+					}
+				});
+				var obs = new IntersectionObserver(function (entries) {
+					entries.forEach(function (e) {
+						if (e.isIntersecting) {
+							links.forEach(function (l) { l.classList.remove('active'); });
+							var a = map['#' + e.target.id];
+							if (a) a.classList.add('active');
+						}
+					});
+				}, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+				Object.keys(map).forEach(function (id) {
+					obs.observe(document.querySelector(id));
+				});
+			}
+		})();
+	</script>
+
+	<!-- MeshCore Stats Loader (Live -> Cached -> Demo) -->
+	<script>
+		(function () {
+			var DEFAULTS = {
+				nodes_all: 275, nodes_7d: 121, messages_24h: 16, contacts_7d: 130,
+				cities: 6, avg_snr_24h: 11.9, avg_hop_count: 4.5,
+				top_channels: [{ channel: 'Public', messages: 74, users: 17 }],
+				longest_path: { path_length: 12, user: 'Natendo 🤿' },
+				top_users: []
+			};
+
+			function $(id) { return document.getElementById(id); }
+			function setText(id, v) { var e = $(id); if (e) e.textContent = (v == null || v === '') ? '–' : v; }
+
+			function animateNum(id, target, decimals) {
+				var el = $(id); if (!el) return;
+				target = Number(target) || 0;
+				var start = null, dur = 800;
+				function step(ts) {
+					if (!start) start = ts;
+					var p = Math.min((ts - start) / dur, 1);
+					var eased = 1 - Math.pow(1 - p, 3);
+					var val = target * eased;
+					el.textContent = decimals ? val.toFixed(decimals) : Math.round(val).toLocaleString();
+					if (p < 1) requestAnimationFrame(step);
+					else el.textContent = decimals ? target.toFixed(decimals) : Math.round(target).toLocaleString();
+				}
+				requestAnimationFrame(step);
+			}
+
+			function fmtUptime(s) {
+				s = Math.floor(Number(s) || 0);
+				var d = Math.floor(s / 86400); s -= d * 86400;
+				var h = Math.floor(s / 3600); s -= h * 3600;
+				var m = Math.floor(s / 60);
+				if (d > 0) return d + 'd ' + h + 'h';
+				if (h > 0) return h + 'h ' + m + 'm';
+				return m + 'm';
+			}
+
+			function fmtAgo(ts) {
+				if (!ts) return '';
+				var diff = Math.floor(Date.now() / 1000 - ts);
+				if (diff < 60) return 'just now';
+				if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+				if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+				return Math.floor(diff / 86400) + 'd ago';
+			}
+
+			function setBadge(mode) {
+				var b = $('stats-badge'); if (!b) return;
+				b.className = 'status-badge ' + mode;
+				var label = mode === 'live' ? 'Live' : mode === 'cached' ? 'Cached' : 'Demo';
+				b.innerHTML = '<span class="dot"></span>' + label;
+			}
+
+			function render(s, nodes, mode) {
+				s = s || {};
+				setBadge(mode);
+
+				animateNum('nodes-total', s.totalNodes);
+
+				// Derive active counts + cities from the nodes feed.
+				var a24 = 0, a7 = 0, cells = {};
+				(nodes || []).forEach(function (n) {
+					var a = ageMs(n.last_heard);
+					if (a != null) {
+						if (a < 86400000) a24++;
+						if (a < 604800000) a7++;
+					}
+					if (n.lat && n.lon && (n.lat !== 0 || n.lon !== 0)) cells[Math.round(n.lat * 10) + ',' + Math.round(n.lon * 10)] = 1;
+				});
+
+				animateNum('nodes-24h', a24);
+				animateNum('nodes-7d', a7);
+				animateNum('packets-24h', s.packetsLast24h);
+				animateNum('observations', s.totalObservations);
+				animateNum('cities', Object.keys(cells).length);
+				var counts = s.counts || {};
+				animateNum('repeaters', counts.repeaters);
+				animateNum('rooms', counts.rooms);
+				animateNum('companions', counts.companions);
+				animateNum('observers', s.totalObservers);
+
+				var ts = s._fetchedAt || (s.timestamp ? s.timestamp * 1000 : null);
+				setText('stats-updated', ts ? (fmtAgo(ts / 1000) + ' · ' + new Date(ts).toLocaleString()) : 'unknown');
+			}
+
+			function ageMs(iso) {
+				if (!iso) return null;
+				var t = Date.parse(iso);
+				return isNaN(t) ? null : (Date.now() - t);
+			}
+
+			function getJSON(url) {
+				return fetch(url, { cache: 'no-store' }).then(function (r) {
+					if (!r.ok) throw new Error(r.status);
+					return r.json();
+				});
+			}
+
+			// Live data straight from CoreScope (CORS-enabled as of 2026-07-30).
+			var CORE = 'https://map.nvme.sh/api';
+			var INSTANCE = 'live3';
+			var CACHE = 'data/meshcore-stats.json';
+
+			Promise.all([
+				getJSON(CORE + '/stats?instance=' + INSTANCE),
+				getJSON(CORE + '/nodes?instance=' + INSTANCE).catch(function () { return { nodes: [] }; })
+			]).then(function (res) {
+				var stats = res[0];
+				stats._fetchedAt = Date.now();
+				render(stats, (res[1] && res[1].nodes) || [], 'live');
+			}).catch(function () {
+				// Fallback: committed snapshot (refreshed by update-meshcore-stats.sh).
+				getJSON(CACHE).then(function (stats) {
+					render(stats, stats.top_users ? [] : [], 'cached');
+				}).catch(function () {
+					render(DEFAULTS, [], 'demo');
+				});
+			});
+		})();
+	</script>
+
+</body>
 </html>

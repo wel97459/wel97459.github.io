@@ -1,0 +1,54 @@
+{
+  "source": "corescope",
+  "instance": "live3",
+  "timestamp": 1785454777.6896439,
+  "nodes_all": 185,
+  "nodes_24h": 50,
+  "nodes_7d": 50,
+  "packets_24h": 7411,
+  "observations_24h": 42321,
+  "repeaters": 146,
+  "rooms": 6,
+  "companions": 33,
+  "observers": 5,
+  "cities": 25,
+  "top_users": [
+    {
+      "user": "Frog Morton",
+      "count": 207
+    },
+    {
+      "user": "SS-Fernley",
+      "count": 181
+    },
+    {
+      "user": "Pach's Princess Posse",
+      "count": 133
+    },
+    {
+      "user": "BTN-CHKN-Repeater",
+      "count": 114
+    },
+    {
+      "user": "Old NW Reno (KI7FOY)",
+      "count": 99
+    },
+    {
+      "user": "Badger EE",
+      "count": 89
+    },
+    {
+      "user": "NevadaMesh.com - Sparks",
+      "count": 74
+    },
+    {
+      "user": "BTN-Barn-Repeater",
+      "count": 38
+    }
+  ],
+  "raw": {
+    "totalPackets": 23425,
+    "totalTransmissions": 23425,
+    "hashMigrationComplete": true
+  }
+}
