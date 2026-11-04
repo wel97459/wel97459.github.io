@@ -206,6 +206,23 @@
 		.map-note { text-align: center; font-size: .8em; color: #999; margin-top: .8em; max-width: 51em; margin-left: auto; margin-right: auto; }
 		.map-note a { color: var(--nm-accent); }
 
+		/* ---------- Resources / Guides ---------- */
+		.resources { margin: 4em 0 1em; text-align: center; }
+		.resources h3 { font-size: 1.8em; margin: 0 0 .2em; color: #2c2c2c; }
+		.resources .sub { color: #666; margin: 0 0 1.6em; }
+		.resource-grid { display: flex; gap: 1.2em; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+		.resource-card {
+			flex: 1 1 300px; max-width: 420px; text-align: left;
+			display: block; text-decoration: none; color: inherit;
+			background: #fff; border: 1px solid #e3eae6; border-left: 4px solid var(--nm-accent);
+			border-radius: 10px; padding: 1.3em 1.4em; transition: box-shadow .15s ease, transform .15s ease;
+		}
+		.resource-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.08); transform: translateY(-2px); }
+		.resource-card h4 { margin: 0 0 .4em; color: #2c2c2c; font-size: 1.15em; }
+		.resource-card p { margin: 0; color: #666; font-size: .92em; }
+		.resource-card .tag { display: inline-block; margin-top: .8em; color: var(--nm-accent-d); font-weight: 700; font-size: .82em; }
+		@media screen and (max-width: 736px) { .resource-grid { flex-direction: column; align-items: stretch; } }
+
 		@media screen and (max-width: 736px) {
 			#main .feature .image img { height: 13em; }
 			#main .feature .content { width: 100% !important; }
@@ -234,6 +251,7 @@
 				<li><a href="#map">Map</a></li>
 				<li><a href="#specs">Specs</a></li>
 				<li><a href="#join">Join</a></li>
+				<li><a href="#resources">Guides</a></li>
 				<li><a href="#donate" class="nav-cta">Donate</a></li>
 			</ul>
 		</div>
@@ -371,6 +389,26 @@
 				<div class="involve-actions">
 					<a class="btn-primary" href="https://discord.gg/FUYAZgp4Ew">Join on Discord</a>
 					<a class="btn-ghost" href="https://t.me/+Uhkh8-nD74JiODlh">Join on Telegram</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Resources / Guides -->
+		<section id="resources" class="resources">
+			<div class="container medium">
+				<h3>Guides &amp; Resources</h3>
+				<p class="sub">Practical MeshCore setup and migration references from the Reno 911 deployment.</p>
+				<div class="resource-grid">
+					<a class="resource-card" href="companion-radio-quick-setup.html">
+						<h4>Companion Radio Quick Setup</h4>
+						<p>Step-by-step quick-start for the MeshCore companion radio &mdash; get on the mesh fast.</p>
+						<span class="tag">View guide &rarr;</span>
+					</a>
+					<a class="resource-card" href="mesh-migration-checklist.html">
+						<h4>Mesh Migration Checklist</h4>
+						<p>Pre-flight checklist for migrating nodes onto the Nevada Mesh network.</p>
+						<span class="tag">View guide &rarr;</span>
+					</a>
 				</div>
 			</div>
 		</section>
