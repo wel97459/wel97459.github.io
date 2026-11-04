@@ -202,22 +202,15 @@
 		.map-note { text-align: center; font-size: .8em; color: #999; margin-top: .8em; max-width: 51em; margin-left: auto; margin-right: auto; }
 		.map-note a { color: var(--nm-accent); }
 
-		/* ---------- Resources / Guides ---------- */
-		.resources { margin: 4em 0 1em; text-align: center; }
-		.resources h3 { font-size: 1.8em; margin: 0 0 .2em; color: #2c2c2c; }
-		.resources .sub { color: #666; margin: 0 0 1.6em; }
-		.resource-grid { display: flex; gap: 1.2em; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
-		.resource-card {
-			flex: 1 1 300px; max-width: 420px; text-align: left;
-			display: block; text-decoration: none; color: inherit;
-			background: #fff; border: 1px solid #e3eae6; border-left: 4px solid var(--nm-accent);
-			border-radius: 10px; padding: 1.3em 1.4em; transition: box-shadow .15s ease, transform .15s ease;
+		/* ---------- Guides (feature-styled, like old Network Specs) ---------- */
+		.guide-links { list-style: none; padding: 0; margin: 1em 0 0; display: grid; gap: .6em; }
+		.guide-links a {
+			display: flex; align-items: center; justify-content: space-between;
+			padding: .8em 1.1em; border: 1px solid var(--nm-accent); border-radius: 8px;
+			color: var(--nm-accent-d); font-weight: 700; text-decoration: none;
+			transition: background .15s ease, color .15s ease;
 		}
-		.resource-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.08); transform: translateY(-2px); }
-		.resource-card h4 { margin: 0 0 .4em; color: #2c2c2c; font-size: 1.15em; }
-		.resource-card p { margin: 0; color: #666; font-size: .92em; }
-		.resource-card .tag { display: inline-block; margin-top: .8em; color: var(--nm-accent-d); font-weight: 700; font-size: .82em; }
-		@media screen and (max-width: 736px) { .resource-grid { flex-direction: column; align-items: stretch; } }
+		.guide-links a:hover { background: var(--nm-accent); color: #fff; }
 
 		@media screen and (max-width: 736px) {
 			#main .feature .image img { height: 13em; }
@@ -333,22 +326,15 @@
 			</section>
 
 			<!-- Resources / Guides -->
-			<section id="resources" class="resources">
-				<div class="container medium">
+			<section class="feature right" id="resources">
+				<a href="#" class="image icon fa-solid fa-book"><img loading="lazy" src="images/pic04.jpg" alt="" /></a>
+				<div class="content">
 					<h3>Guides &amp; Resources</h3>
-					<p class="sub">Practical MeshCore setup and migration references from the Reno 911 deployment.</p>
-					<div class="resource-grid">
-						<a class="resource-card" href="companion-radio-quick-setup.html">
-							<h4>Companion Radio Quick Setup</h4>
-							<p>Step-by-step quick-start for the MeshCore companion radio &mdash; get on the mesh fast.</p>
-							<span class="tag">View guide &rarr;</span>
-						</a>
-						<a class="resource-card" href="mesh-migration-checklist.html">
-							<h4>Mesh Migration Checklist</h4>
-							<p>Pre-flight checklist for migrating nodes onto the Nevada Mesh network.</p>
-							<span class="tag">View guide &rarr;</span>
-						</a>
-					</div>
+					<p>Practical MeshCore setup and migration references from the Reno 911 deployment.</p>
+					<ul class="guide-links">
+						<li><a href="companion-radio-quick-setup.html">Companion Radio Quick Setup &rarr;</a></li>
+						<li><a href="mesh-migration-checklist.html">Mesh Migration Checklist &rarr;</a></li>
+					</ul>
 				</div>
 			</section>
 
